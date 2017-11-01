@@ -1,4 +1,4 @@
-package modeloAlu.vo;
+package model;
 
 import java.util.Date;
 

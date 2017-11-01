@@ -1,4 +1,4 @@
-package modeloAlu.dao;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import conexion.Conexion;
-import modeloAlu.vo.Empleado;
+import model.Empleado;
 
 public class EmpleadoDao {
 	Connection conexion = null;

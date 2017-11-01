@@ -1,4 +1,4 @@
-package vistaAlu;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -13,9 +13,9 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
 
-import controladorAlu.ControladorAlu;
-import modeloAlu.LogicaAlu;
-import modeloAlu.vo.Departamento;
+import controller.ControladorAlu;
+import model.LogicaAlu;
+import model.Departamento;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -32,30 +32,28 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 
-	/*private static VentanaDepartamentosNuevoAlu dialog = new VentanaDepartamentosNuevoAlu();
-	private VentanaPrincipalAlu vPrincipal = null;*/
-	
+	/*
+	 * private static VentanaDepartamentosNuevoAlu dialog = new
+	 * VentanaDepartamentosNuevoAlu(); private VentanaPrincipalAlu vPrincipal =
+	 * null;
+	 */
+
 	private ControladorAlu controlador = null;
 	private Departamento departamento = null;
-	
-	
-	
+
 	public void setControlador(ControladorAlu controlador) {
 		this.controlador = controlador;
 	}
-	
+
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
-		try {
-
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
+	/*
+	 * public static void main(String[] args) { try {
+	 * 
+	 * dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	 * dialog.setVisible(true); } catch (Exception e) { e.printStackTrace(); } }
+	 */
 
 	/**
 	 * Create the dialog.
@@ -120,7 +118,7 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 				okButton = new JButton("OK");
 				okButton.setEnabled(true);
 				okButton.addActionListener(new OkButtonActionListener());
-				
+
 				JButton btnSalir = new JButton("Salir");
 				btnSalir.addActionListener(new BtnSalirActionListener());
 				buttonPane.add(btnSalir);
@@ -139,9 +137,9 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 
 	private class CancelButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//cierra el cuadro de diálogo
-			//dispose();
-			
+			// cierra el cuadro de diálogo
+			// dispose();
+
 			limpiarCuadrosTexto();
 			textFieldCodDepart.requestFocus();
 		}
@@ -150,61 +148,65 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 	private class OkButtonActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			//creamos n departamento donde guardamos los campos insertados en los
+			// creamos n departamento donde guardamos los campos insertados en
+			// los
 			// cuadros de texto, tanto si es nuevo como si lo hemos modificado
 			departamento = new Departamento();
 			departamento.setCodigo(Short.parseShort(textFieldCodDepart.getText()));
 			departamento.setDepartamento(textFieldDepartamento.getText());
 			departamento.setLocalidad(textFieldLocalidad.getText());
-		
-			//creamos el objeto controlador
+
+			// creamos el objeto controlador
 			controlador = new ControladorAlu();
-	//		controlador.nuevoDepartamento(departamento);
-				
+			// controlador.nuevoDepartamento(departamento);
+
 			limpiarCuadrosTexto();
 			situacionInicial();
 
 		}
 	}// fin del metodo OK
+
 	private class BtnSalirActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			dispose();
 		}
 	}
+
 	private class TextFieldCodDepartActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			String codigo = textFieldCodDepart.getText();
-			if(controlador.validarCodigoDepar(codigo) == true)
+			if (controlador.validarCodigoDepar(codigo) == true)
 				textFieldDepartamento.requestFocus();
-			else{
+			else {
 				textFieldCodDepart.setText("");
 				textFieldCodDepart.requestFocus();
 			}
-			
-			
+
 		}
 	}
+
 	private class TextFieldDepartamentoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String nombre = textFieldDepartamento.getText();
-			if(controlador.validarNombre(nombre, 1) == true){
+			if (controlador.validarNombre(nombre, 1) == true) {
 				textFieldDepartamento.setText("");
 				textFieldDepartamento.requestFocus();
-			}else
+			} else
 				textFieldLocalidad.requestFocus();
 		}
 	}
+
 	private class TextFieldLocalidadActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			String localidad = textFieldLocalidad.getText();
-			if(controlador.validarNombre(localidad, 2)== true){
+			if (controlador.validarNombre(localidad, 2) == true) {
 				textFieldLocalidad.setText("");
 				textFieldLocalidad.requestFocus();
 			}
 		}
 	}
 
-	public void limpiarCuadrosTexto(){
+	public void limpiarCuadrosTexto() {
 
 		textFieldCodDepart.setText("");
 		textFieldDepartamento.setText("");
@@ -212,29 +214,25 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 
 	}// fin metodo limpiarCuadrosTexto()
 
-	//este metodo inhabilita los cuadros de texto y los botones
-	public void situacionInicial(){
-		//habilitar y deshabilitar los cuadros de texto
+	// este metodo inhabilita los cuadros de texto y los botones
+	public void situacionInicial() {
+		// habilitar y deshabilitar los cuadros de texto
 		textFieldCodDepart.setEditable(true);
 		textFieldDepartamento.setEditable(true);
 		textFieldLocalidad.setEditable(true);
 
-		//pone el cursor en el cuadro de texto
+		// pone el cursor en el cuadro de texto
 		textFieldCodDepart.requestFocus();
 
 		okButton.setEnabled(true);
 		cancelButton.setEnabled(true);
 	}// fin del metodo situacionInicial
 
-	public void editarCuadrosTexto(){
-		//editamos los campos
+	public void editarCuadrosTexto() {
+		// editamos los campos
 		textFieldCodDepart.setEditable(true);
 		textFieldDepartamento.setEditable(true);
 		textFieldLocalidad.setEditable(true);
 	} // fin metodo editarCuadrosTexto
 
-
-
-	
-	
 }

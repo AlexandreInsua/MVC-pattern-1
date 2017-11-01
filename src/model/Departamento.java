@@ -1,4 +1,4 @@
-package modeloAlu.vo;
+package model;
 
 public class Departamento {
 	private short codigo;
