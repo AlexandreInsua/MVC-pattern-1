@@ -24,6 +24,10 @@ import java.awt.Font;
 
 public class VentanaDepartamentosNuevoAlu extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textFieldCodDepart;
 	private JTextField textFieldDepartamento;
@@ -151,14 +155,18 @@ public class VentanaDepartamentosNuevoAlu extends JDialog {
 			// creamos n departamento donde guardamos los campos insertados en
 			// los
 			// cuadros de texto, tanto si es nuevo como si lo hemos modificado
+			
+			// Créase o obxeco departamentos cos datos do cadro de texto
 			departamento = new Departamento();
+			// datos tomados do formulario
 			departamento.setCodigo(Short.parseShort(textFieldCodDepart.getText()));
 			departamento.setDepartamento(textFieldDepartamento.getText());
 			departamento.setLocalidad(textFieldLocalidad.getText());
 
-			// creamos el objeto controlador
+			// Creamos o controlador para que cree o departamento
 			controlador = new ControladorAlu();
-			// controlador.nuevoDepartamento(departamento);
+			// Este método creáse o metodo ( que chamará a clase dao correspondentes
+			controlador.nuevoDepartamento(departamento);
 
 			limpiarCuadrosTexto();
 			situacionInicial();

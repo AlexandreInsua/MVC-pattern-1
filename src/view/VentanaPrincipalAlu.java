@@ -29,7 +29,7 @@ public class VentanaPrincipalAlu extends JFrame {
 
 	// private static VentanaDepartamentosNuevoAlu vtnDeparNuevo = null;
 
-	ControladorAlu miControlador;
+	ControladorAlu miControlador = new ControladorAlu();
 
 	public void setMiControlador(ControladorAlu miControlador) {
 		this.miControlador = miControlador;
@@ -99,6 +99,14 @@ public class VentanaPrincipalAlu extends JFrame {
 		JButton btnNuevoDep = new JButton("Nuevo");
 		btnNuevoDep.addActionListener(new BtnNuevoDepActionListener());
 		panelDepartamentos.add(btnNuevoDep);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				miControlador.mostrarDepartamentoModificar();
+			}
+		});
+		panelDepartamentos.add(btnModificar);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Empleados", TitledBorder.LEADING,
@@ -131,14 +139,13 @@ public class VentanaPrincipalAlu extends JFrame {
 
 	private class BtnNuevoDepActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			/*
-			 * vtnDeparNuevo = new VentanaDepartamentosNuevo();
-			 * vtnDeparNuevo.setVisible(true);
-			 */
+			
+		/*	VentanaDepartamentosNuevoAlu  vtnDeparNuevo = new VentanaDepartamentosNuevoAlu();
+			  vtnDeparNuevo.setVisible(true);*/
+			 
 
 			miControlador.mostrarVentanaNuevoDepartamento();
 
 		}
 	}
-
 }

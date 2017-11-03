@@ -19,23 +19,29 @@ public class DepartamentoDao {
 		super();
 	}
 
+
 	public void nuevoDepartamento(Departamento depar) {
 		conexion = new Conexion();
 		Connection conn = conexion.getConnection();
 
 		// Preparamos la consulta de actualizacion
+		// BEA USA SEMPRE ESTE METODO
 		PreparedStatement ps = null;
 
-		// creamos el string con la consulta
+		// creamos un string coa consulta 
 		String sql = "INSERT INTO Departamentos (CodDepartamento, DepNombre, Localidad) " + "VALUES (?, ?, ?)";
 
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
-			// pasamos los parametros
+			// pasamos os parámetros 
+			// usamos un set por cada tipo de datos  que ten dous parámetros:
+			// 1. A posición da interrogación con respecto á sentenza e
+			// 2. O valor que se lle vai pasar
 			ps.setShort(1, depar.getCodigo());
 			ps.setString(2, depar.getDepartamento());
 			ps.setString(3, depar.getLocalidad());
 			// ejecutamos la consulta
+			// executeUpdate devolve int
 			int filas = ps.executeUpdate();
 			if (filas != 0) {
 				JOptionPane.showMessageDialog(null, "Inserción correcta");
@@ -365,5 +371,7 @@ public class DepartamentoDao {
 
 		return lista;
 	}
+
+	
 
 }// fin de la clase

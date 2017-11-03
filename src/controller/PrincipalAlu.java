@@ -1,6 +1,7 @@
 package controller;
 
 import model.LogicaAlu;
+import view.VentanaDepartamentoModificar;
 import view.VentanaDepartamentosNuevoAlu;
 import view.VentanaPrincipalAlu;
 
@@ -9,10 +10,12 @@ public class PrincipalAlu {
 	// objetos para cada uno de los formularios
 	VentanaPrincipalAlu miVentanaPrincipal;
 	VentanaDepartamentosNuevoAlu miVentanaDepartamentosNuevo;
-
+	VentanaDepartamentoModificar miVentanaDepartamentoModificar = new VentanaDepartamentoModificar();
 	// objetos para el controlador y la logica
 	ControladorAlu miControlador;
 	LogicaAlu miLogica;
+	
+
 
 	public static void main(String[] args) {
 		PrincipalAlu principal = new PrincipalAlu();
@@ -33,6 +36,7 @@ public class PrincipalAlu {
 		// set
 		miVentanaPrincipal.setMiControlador(miControlador);
 		miVentanaDepartamentosNuevo.setControlador(miControlador);
+		miVentanaDepartamentoModificar.setControlador(miControlador);
 
 		miLogica.setMiControlador(miControlador);
 

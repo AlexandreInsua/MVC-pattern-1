@@ -7,6 +7,7 @@ import model.DepartamentoDao;
 import model.EmpleadoDao;
 import model.Departamento;
 import model.Empleado;
+import view.VentanaDepartamentoModificar;
 import view.VentanaDepartamentosNuevoAlu;
 import view.VentanaPrincipalAlu;
 
@@ -15,9 +16,22 @@ public class ControladorAlu {
 	// objetos de cada uno de los formularios
 	VentanaPrincipalAlu miVentanaPrincipal;
 	VentanaDepartamentosNuevoAlu miVentanaDepartamentosNuevo;
+	VentanaDepartamentoModificar miVentanaDepartamentoModificar;
+	
+	
+	public VentanaDepartamentoModificar getVentanaDepartametnoModificar() {
+		return getVentanaDepartametnoModificar();
+	}
+
+	public void setVentanaDepartametnoModificar(VentanaDepartamentoModificar ventanaDepartametnoModificar) {
+		this.miVentanaDepartamentoModificar = ventanaDepartametnoModificar;
+	}
+
+	DepartamentoDao departamentoDao;
+	VentanaDepartamentoModificar ventanaDepartamentoModificar;
 
 	// objeto de la clase Logica
-	LogicaAlu miLogica;
+	LogicaAlu miLogica = new LogicaAlu();
 
 	public ControladorAlu() {
 		super();
@@ -38,7 +52,7 @@ public class ControladorAlu {
 
 	// mostramos las ventanas
 	public void mostrarVentanaNuevoDepartamento() {
-		miVentanaDepartamentosNuevo.setVisible(true);
+	 miVentanaDepartamentosNuevo.setVisible(true);
 	}
 
 	public boolean validarCodigoDepar(String codigo) {
@@ -49,6 +63,17 @@ public class ControladorAlu {
 	public boolean validarNombre(String nombre, int caso) {
 		// TODO Auto-generated method stub
 		return miLogica.validarNombre(nombre, caso);
+	}
+
+	public void nuevoDepartamento(Departamento departamento) {
+		// TODO Auto-generated method stub
+		departamentoDao = new DepartamentoDao();
+		departamentoDao.nuevoDepartamento(departamento);
+	}
+
+	public void mostrarDepartamentoModificar() {
+		miVentanaDepartamentoModificar.setVisible(true);
+		
 	}
 
 }

@@ -14,10 +14,10 @@ public class LogicaAlu {
 	}
 
 	public boolean validarCodigoDepar(String codigo) {
-		if (Integer.parseInt(codigo) > 99 && Integer.parseInt(codigo) < 1000)
+		if (Integer.parseInt(codigo) > 9 && Integer.parseInt(codigo) < 1000)
 			return true;
 		else {
-			JOptionPane.showMessageDialog(null, "Error código de 3 dígitos");
+			JOptionPane.showMessageDialog(null, "Error código de 1 dígitos");
 			return false;
 		}
 	}
