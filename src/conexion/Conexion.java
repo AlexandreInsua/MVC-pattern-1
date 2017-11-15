@@ -43,4 +43,10 @@ public class Conexion {
 	public void desconectar(){
 		connection = null;
 	}
+	public static void main(String[] args) {
+		Conexion c = new Conexion();
+		c.getConnection();
+	}
 }
+
+
