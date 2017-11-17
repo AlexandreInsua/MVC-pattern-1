@@ -1,6 +1,5 @@
-package model;
+package modelo.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,84 +8,76 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import conexion.Conexion;
-import model.Departamento;
+import modelo.vo.Departamento;
 
-public class DepartamentoDao {
+
+public class DepartamentoDaoAlu {
 	Departamento departamento = null;
-	Conexion conexion = null;
+	
 
-	public DepartamentoDao() {
+	public DepartamentoDaoAlu() {
 		super();
 	}
 
+	public void nuevoDepartamento(Departamento depar){
+		//creamos la conexion
+		Conexion conexion = new Conexion();
 
-	public void nuevoDepartamento(Departamento depar) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
+		//Preparamos la consulta de actualizacion
+		PreparedStatement ps=null;
 
-		// Preparamos la consulta de actualizacion
-		// BEA USA SEMPRE ESTE METODO
-		PreparedStatement ps = null;
+		// creamos el string con la consulta
+		String sql = "INSERT INTO Departamentos (CodDepartamento, DepNombre, Localidad) "
+				+ "VALUES (?, ?, ?)";
 
-		// creamos un string coa consulta 
-		String sql = "INSERT INTO Departamentos (CodDepartamento, DepNombre, Localidad) " + "VALUES (?, ?, ?)";
-
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
-			// pasamos os parámetros 
-			// usamos un set por cada tipo de datos  que ten dous parámetros:
-			// 1. A posición da interrogación con respecto á sentenza e
-			// 2. O valor que se lle vai pasar
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
+			//pasamos los parametros
 			ps.setShort(1, depar.getCodigo());
 			ps.setString(2, depar.getDepartamento());
 			ps.setString(3, depar.getLocalidad());
-			// ejecutamos la consulta
-			// executeUpdate devolve int
+		
+			//ejecutamos la consulta	
 			int filas = ps.executeUpdate();
-			if (filas != 0) {
+			if(filas != 0){
 				JOptionPane.showMessageDialog(null, "Inserción correcta");
 			}
+
 
 		} catch (SQLException sqle) {
 			if (sqle.getErrorCode() == 1062)
 				JOptionPane.showMessageDialog(null, "Departamento ya existe", "Error", JOptionPane.ERROR_MESSAGE);
 			else
 				JOptionPane.showMessageDialog(null, sqle.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		} finally {
-			// cerramos la conexion
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}finally{
+			conexion.desconectar();
 		}
 	}// fin metodo nuevoDepartamento
-
-	public void actualizarDepartamento(Departamento depar) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
-		PreparedStatement ps = null;
+	
+	public void modificarDepartamento(Departamento depar){
+		Conexion conexion = new Conexion();
+		
+		//Preparamos la consulta de actualizacion
+		PreparedStatement ps=null;
 
 		// creamos el string con la consulta
-		String sql = "UPDATE Departamentos SET DepNombre = ?, Localidad = ?" + " WHERE CodDepartamento = ?";
+		String sql = "UPDATE Departamentos SET DepNombre = ?, Localidad = ?"
+				+ " WHERE CodDepartamento = ?";
 
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
-			// pasamos los parametros
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
+			//pasamos los parametros
 			ps.setString(1, depar.getDepartamento());
 			ps.setString(2, depar.getLocalidad());
 			ps.setShort(3, depar.getCodigo());
 
-			// ejecutamos la consulta
+			//ejecutamos la consulta	
 			int filas = ps.executeUpdate();
-			if (filas != 0) {
+			if(filas != 0){
 				JOptionPane.showMessageDialog(null, "Actualización correcta");
 			}
-			// cerramos la conexion
-			conn.close();
+			//cerramos la conexion
+			conexion.desconectar();
 
 		} catch (SQLException sqle) {
 			if (sqle.getErrorCode() == 1064)
@@ -95,12 +86,45 @@ public class DepartamentoDao {
 				JOptionPane.showMessageDialog(null, sqle.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}// fin del metodo actualizarDepartamento
+	
 
-	public Departamento buscarDepartamento(short codDepar) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
+	
 
-		// Preparamos la consulta de actualizacion
+	
+
+	public void eliminarDepartamento(short codigo){
+		Conexion conexion = new Conexion();
+		
+		//Preparamos la consulta de actualizacion
+		PreparedStatement ps=null;
+
+		// creamos el string con la consulta
+		String sql = "DELETE FROM Departamentos WHERE CodDepartamento = ?";
+
+		try{
+			ps=(PreparedStatement)conexion.getConnection().prepareStatement(sql);
+			//pasamos los parametros
+			ps.setShort(1, codigo);
+
+			//ejecutamos la consulta	
+			int filas = ps.executeUpdate();
+			if(filas != 0){
+				JOptionPane.showMessageDialog(null, "Eliminación correcta");
+			}
+			//cerramos la conexion
+			conexion.desconectar();
+
+		} catch (SQLException sqle) {
+			JOptionPane.showMessageDialog(null, "Error SQL Delete.");
+		}
+	} // fin del metodo eliminarDepartamento
+
+	public Departamento buscarDepartamento(short codDepar){
+		//creamos la conexion
+		Conexion conexion = new Conexion();
+
+
+		//Preparamos la consulta de actualizacion
 		PreparedStatement ps = null;
 		ResultSet resultado = null;
 
@@ -108,68 +132,48 @@ public class DepartamentoDao {
 		Departamento depar = null;
 
 		// creamos el string con la consulta
-		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos" + " WHERE CodDepartamento = ?";
+		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
+				+ " WHERE CodDepartamento = ?";
 
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
 
-			// pasamos los parametros
+			//pasamos los parametros
 			ps.setShort(1, codDepar);
 
-			// ejecutamos la consulta
+			//ejecutamos la consulta	
 			// creamos el resultado de la consulta
 			resultado = ps.executeQuery();
 
-			if (resultado.next()) {
+			if(resultado.next() ){
 				depar = new Departamento();
 
 				depar.setCodigo(resultado.getShort("CodDepartamento"));
 				depar.setDepartamento(resultado.getString("DepNombre"));
 				depar.setLocalidad(resultado.getString("Localidad"));
+			
+			// otra forma de recuperar los datos de la consulta es poniendo el indice de la 
+			// columna con respecto a la consulta
+				
+			/*	depar.setCodigo(resultado.getShort(1));
+				depar.setDepartamento(resultado.getString(2));
+				depar.setLocalidad(resultado.getString(3));*/
 			}
-
-			// cerramos la conexion
-			conn.close();
+			//cerramos la conexion
+			conexion.desconectar();
 
 		} catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, "Error SQL Select.");
 		}
 		return depar;
 	}// fin metodo buscarDepartamento
+	
 
-	public void eliminarDepartamento(short codigo) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
-		PreparedStatement ps = null;
-
-		// creamos el string con la consulta
-		String sql = "DELETE FROM Departamentos WHERE CodDepartamento = ?";
-
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
-			// pasamos los parametros
-			ps.setShort(1, codigo);
-
-			// ejecutamos la consulta
-			int filas = ps.executeUpdate();
-			if (filas != 0) {
-				JOptionPane.showMessageDialog(null, "Eliminación correcta");
-			}
-			// cerramos la conexion
-			conn.close();
-
-		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(null, "Error SQL Delete.");
-		}
-	} // fin del metodo eliminarDepartamento
-
-	public Departamento primerDepartamento() {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
+	
+	public Departamento primerDepartamento(){
+		Conexion conexion = new Conexion();
+		
+		//Preparamos la consulta de actualizacion
 		PreparedStatement ps = null;
 		ResultSet resultado = null;
 
@@ -180,14 +184,14 @@ public class DepartamentoDao {
 		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
 				+ " ORDER BY CodDepartamento limit 1";
 
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
 
-			// ejecutamos la consulta
+			//ejecutamos la consulta	
 			// creamos el resultado de la consulta
 			resultado = ps.executeQuery();
 
-			if (resultado.next()) {
+			if(resultado.next() ){
 				depar = new Departamento();
 
 				depar.setCodigo(resultado.getShort("CodDepartamento"));
@@ -195,8 +199,9 @@ public class DepartamentoDao {
 				depar.setLocalidad(resultado.getString("Localidad"));
 			}
 
-			// cerramos la conexion
-			conn.close();
+
+			//cerramos la conexion
+			conexion.desconectar();
 
 		} catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, "Error SQL Select.");
@@ -204,11 +209,12 @@ public class DepartamentoDao {
 		return depar;
 	}// fin metodo primerDepartamento
 
-	public Departamento ultimoDepartamento() {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
+	
+	public Departamento ultimoDepartamento(){
+		Conexion conexion = new Conexion();
+	
 
-		// Preparamos la consulta de actualizacion
+		//Preparamos la consulta de actualizacion
 		PreparedStatement ps = null;
 		ResultSet resultado = null;
 
@@ -219,14 +225,14 @@ public class DepartamentoDao {
 		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
 				+ " ORDER BY CodDepartamento DESC limit 1";
 
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
 
-			// ejecutamos la consulta
+			//ejecutamos la consulta	
 			// creamos el resultado de la consulta
 			resultado = ps.executeQuery();
 
-			if (resultado.next()) {
+			if(resultado.next() ){
 				depar = new Departamento();
 
 				depar.setCodigo(resultado.getShort("CodDepartamento"));
@@ -234,63 +240,20 @@ public class DepartamentoDao {
 				depar.setLocalidad(resultado.getString("Localidad"));
 			}
 
-			// cerramos la conexion
-			conn.close();
+
+			//cerramos la conexion
+			conexion.desconectar();
 
 		} catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, "Error SQL Select.");
 		}
 		return depar;
 	}// fin metodo ultimoDepartamento
-
-	public Departamento siguienteDepartamento(short codDepar) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
-		PreparedStatement ps = null;
-		ResultSet resultado = null;
-
-		// objeto donde se guarda el resultado de la consulta
-		Departamento depar = null;
-
-		// creamos el string con la consulta
-		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
-				+ " WHERE CodDepartamento > ? ORDER BY CodDepartamento LIMIT 0, 1";
-
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
-
-			// pasamos los parametros
-			ps.setShort(1, codDepar);
-
-			// ejecutamos la consulta
-			// creamos el resultado de la consulta
-			resultado = ps.executeQuery();
-
-			if (resultado.next()) {
-				depar = new Departamento();
-
-				depar.setCodigo(resultado.getShort("CodDepartamento"));
-				depar.setDepartamento(resultado.getString("DepNombre"));
-				depar.setLocalidad(resultado.getString("Localidad"));
-			}
-
-			// cerramos la conexion
-			conn.close();
-
-		} catch (SQLException sqle) {
-			JOptionPane.showMessageDialog(null, "Error SQL Select.");
-		}
-		return depar;
-
-	}// fin metodo siguienteDepartamento
-
-	public Departamento anteriorDepartamento(short codDepar) {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
+	
+	public Departamento anteriorDepartamento(short codDepar){
+		Conexion conexion = new Conexion();
+		
+		//Preparamos la consulta de actualizacion
 		PreparedStatement ps = null;
 		ResultSet resultado = null;
 
@@ -301,17 +264,17 @@ public class DepartamentoDao {
 		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
 				+ " WHERE CodDepartamento < ? ORDER BY CodDepartamento DESC LIMIT 0, 1";
 
-		try {
-			ps = (PreparedStatement) conn.prepareStatement(sql);
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
 
-			// pasamos los parametros
+			//pasamos los parametros 
 			ps.setShort(1, codDepar);
 
-			// ejecutamos la consulta
+			//ejecutamos la consulta	
 			// creamos el resultado de la consulta
 			resultado = ps.executeQuery();
 
-			if (resultado.next()) {
+			if(resultado.next() ){
 				depar = new Departamento();
 
 				depar.setCodigo(resultado.getShort("CodDepartamento"));
@@ -319,44 +282,43 @@ public class DepartamentoDao {
 				depar.setLocalidad(resultado.getString("Localidad"));
 			}
 
-			// cerramos la conexion
-			conn.close();
+
+			//cerramos la conexion
+			conexion.desconectar();
 
 		} catch (SQLException sqle) {
 			JOptionPane.showMessageDialog(null, "Error SQL Select.");
 		}
-		return depar;
+		return depar;			
 
 	}// fin metodo anteriorDepartamento
+	
+	public ArrayList <Departamento> cargarDepartamentos(){
+		Conexion conexion = new Conexion();
 
-	public ArrayList<Departamento> cargarDepartamentos() {
-		conexion = new Conexion();
-		Connection conn = conexion.getConnection();
-
-		// Preparamos la consulta de actualizacion
+		//Preparamos la consulta de actualizacion
 		PreparedStatement ps = null;
 		ResultSet resultado = null;
 
 		Departamento departamento = null;
-		ArrayList<Departamento> lista = new ArrayList<Departamento>();
-
+		ArrayList <Departamento> lista = new ArrayList<Departamento>();
+		
 		// limpiamos los datos
 		lista.clear();
 
 		String consultaSQL = "SELECT * from Departamentos ORDER BY DepNombre";
 
-		try {
+		try{
 
-			// preparo la ejecucion de la consulta
-			ps = conn.prepareStatement(consultaSQL);
+			//preparo la ejecucion de la consulta
+			ps =  conexion.getConnection().prepareStatement(consultaSQL);				
 			resultado = ps.executeQuery();
-			while (resultado.next()) {
+			while(resultado.next()){
 				departamento = new Departamento();
 
 				departamento.setCodigo(resultado.getShort("CodDepartamento"));
 				departamento.setDepartamento(resultado.getString("DepNombre"));
 				departamento.setLocalidad(resultado.getString("Localidad"));
-
 				lista.add(departamento);
 
 			}
@@ -364,14 +326,64 @@ public class DepartamentoDao {
 			resultado.close();
 			conexion.desconectar();
 
+
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Error, no se conecto");
 			System.out.println(e);
 		}
 
 		return lista;
-	}
+	}// fin cargarDepartamento
+
+	public Departamento siguienteDepartamento(short codDepar){
+		Conexion conexion = new Conexion();
+		
+		//Preparamos la consulta de actualizacion
+		PreparedStatement ps = null;
+		ResultSet resultado = null;
+
+		// objeto donde se guarda el resultado de la consulta
+		Departamento depar = null;
+
+		// creamos el string con la consulta
+		String sql = "SELECT CodDepartamento, DepNombre, Localidad FROM Departamentos"
+				+ " WHERE CodDepartamento > ? ORDER BY CodDepartamento LIMIT 0, 1";
+
+		try{
+			ps=(PreparedStatement) conexion.getConnection().prepareStatement(sql);
+
+			//pasamos los parametros
+			ps.setShort(1, codDepar);
+
+			//ejecutamos la consulta	
+			// creamos el resultado de la consulta
+			resultado = ps.executeQuery();
+
+			if(resultado.next() ){
+				depar = new Departamento();
+
+				depar.setCodigo(resultado.getShort("CodDepartamento"));
+				depar.setDepartamento(resultado.getString("DepNombre"));
+				depar.setLocalidad(resultado.getString("Localidad"));
+			}
+
+
+			//cerramos la conexion
+			conexion.desconectar();
+
+		} catch (SQLException sqle) {
+			JOptionPane.showMessageDialog(null, "Error SQL Select.");
+		}
+		return depar;			
+
+	}// fin metodo siguienteDepartamento
 
 	
+
+
+	
+
+
+
 
 }// fin de la clase

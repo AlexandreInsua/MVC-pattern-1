@@ -13,7 +13,7 @@ public class Conexion {
 	static String password = "SegundoDAM";
 	static String url = "jdbc:mysql://localhost/"+bd;
 
-	Connection connection = null;
+	Connection conn = null;
 
 	/** Constructor de DbConnection */
 	public Conexion() {
@@ -21,9 +21,9 @@ public class Conexion {
 			//obtenemos el driver de para mysql
 			Class.forName("com.mysql.jdbc.Driver");
 			//obtenemos la conexión
-			connection = DriverManager.getConnection(url,login,password);
+			conn = DriverManager.getConnection(url,login,password);
 
-			if (connection!=null){
+			if (conn!=null){
 				System.out.println("Conexión a base de datos "+bd+" OK");
 			}
 		}
@@ -37,16 +37,10 @@ public class Conexion {
 	}
 	/**Permite retornar la conexión*/
 	public Connection getConnection(){
-		return connection;
+		return conn;
 	}
 
 	public void desconectar(){
-		connection = null;
-	}
-	public static void main(String[] args) {
-		Conexion c = new Conexion();
-		c.getConnection();
+		conn = null;
 	}
 }
-
-

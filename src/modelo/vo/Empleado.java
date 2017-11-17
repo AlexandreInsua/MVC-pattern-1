@@ -1,4 +1,4 @@
-package model;
+package modelo.vo;
 
 import java.util.Date;
 

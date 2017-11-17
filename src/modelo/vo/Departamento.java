@@ -1,4 +1,4 @@
-package model;
+package modelo.vo;
 
 public class Departamento {
 	private short codigo;
@@ -40,6 +40,7 @@ public class Departamento {
 	public void setLocalidad(String localidad) {
 		this.localidad = localidad;
 	}
+
 	
 	@Override
 	public String toString() {
