@@ -87,11 +87,6 @@ public class DepartamentoDaoAlu {
 		}
 	}// fin del metodo actualizarDepartamento
 	
-
-	
-
-	
-
 	public void eliminarDepartamento(short codigo){
 		Conexion conexion = new Conexion();
 		
@@ -168,8 +163,6 @@ public class DepartamentoDaoAlu {
 		return depar;
 	}// fin metodo buscarDepartamento
 	
-
-	
 	public Departamento primerDepartamento(){
 		Conexion conexion = new Conexion();
 		
@@ -209,7 +202,6 @@ public class DepartamentoDaoAlu {
 		return depar;
 	}// fin metodo primerDepartamento
 
-	
 	public Departamento ultimoDepartamento(){
 		Conexion conexion = new Conexion();
 	
@@ -379,11 +371,4 @@ public class DepartamentoDaoAlu {
 	}// fin metodo siguienteDepartamento
 
 	
-
-
-	
-
-
-
-
 }// fin de la clase
