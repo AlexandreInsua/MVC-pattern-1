@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-public class Conexion {
+public class Conexion  {
 	
 	static String bd = "ud02bd01empleados";
 	static String login = "SegundoDAM";
-	static String password = "SegundoDAM";
+	static String password = "randulfolupe";
 	static String url = "jdbc:mysql://localhost/"+bd;
 
 	Connection conn = null;
